@@ -62,10 +62,12 @@ export default function ProjectCatalogue() {
                 {project.title}
               </h2>
               {/* Expand description to 4 lines if no links exist, otherwise restrict to 2 */}
-              <p className={`text-t-muted text-sm leading-relaxed mb-6 ${hasLinks ? 'line-clamp-2' : 'line-clamp-4'}`}>
+              <p
+                className={`text-t-muted text-sm leading-relaxed mb-6 ${hasLinks ? 'line-clamp-2' : 'line-clamp-4'}`}
+              >
                 {project.description}
               </p>
-              
+
               <div className={`mt-auto flex items-center ${hasLinks ? 'justify-between' : ''}`}>
                 {hasLinks && (
                   <div className="flex items-center gap-2">
@@ -93,7 +95,7 @@ export default function ProjectCatalogue() {
                     )}
                   </div>
                 )}
-                
+
                 <div className="flex items-center gap-2 text-t-primary font-medium text-sm">
                   View Project{' '}
                   <PiArrowRight className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" />
