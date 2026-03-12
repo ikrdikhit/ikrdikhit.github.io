@@ -1,178 +1,150 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <meta charset="utf-8" />
-    <meta content="IE=edge" http-equiv="X-UA-Compatible" />
-    <meta
-      content="width=device-width,height=device-height,initial-scale=1,shrink-to-fit=yes"
-      name="viewport"
-    />
-    <meta content="#000f19" name="theme-color" />
-    <meta
-      content="black-translucent"
-      name="apple-mobile-web-app-status-bar-style"
-    />
-    <meta content="yes" name="apple-mobile-web-app-capable" />
-    <meta content="" name="apple-mobile-web-app-status-bar-style" />
-    <title>Dikhit Das &#40;ikrdikhit&#41;</title>
-    <meta
-      content="Dikhit, ikrdikhit, SpicyDevs, @ikrdikhit, Dikhit Das, Dikhit"
-      name="keywords"
-    />
-    <meta content="Dikhit Das (ikrdikhit)" name="author" />
-    <meta
-      content="Dikhit is a devloper working at Spicydevs who is also known as ikrdikhit and was previously known with the aliases fakedark, fakedarkdev and fake.dark.dev"
-      name="description"
-    />
-    <meta
-      content="Dikhit is a devloper working at Spicydevs who is also known as ikrdikhit and was previously known with the aliases fakedark, fakedarkdev and fake.dark.dev"
-      property="og:description"
-    />
-    <meta content="Dikhit Das (ikrdikhit)" property="og:title" />
-    <meta content="assets/avatar.jpg" property="og:image" />
-    <meta content="https://fakedarkdev.github.io/" property="og:url" />
-    <meta content="website" property="og:type" />
-    <meta content="summary_large_image" name="twitter:card" />
-    <meta content="@ikrdikhit" name="twitter:creator" />
-    <meta content="Dikhit Das (ikrdikhit)" name="twitter:title" />
-    <meta content="assets/avatar.jpg" name="twitter:image" />
-    <meta content="@ikrdikhit" name="twitter:site" />
-    <meta
-      content="Dikhit is a devloper working at Spicydevs who is also known as ikrdikhit and was previously known with the aliases fakedark, fakedarkdev and fake.dark.dev"
-      name="twitter:description"
-    />
-    <link href="assets/icons/favicon.ico" rel="icon" type="image/x-icon" />
-    <link href="https://ikrdikhit.github.io/" rel="canonical" />
-    <link rel="stylesheet" href="assets/css/style.css" />
-  </head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+    <!-- Placeholders: __SITE_NAME__ __THEME_COLOR__ are dynamically generated via vite.config.ts -->
+
+    <!-- Descriptive fallback title shown before React hydrates (and to crawlers without JS) -->
+    <title>__SITE_NAME__ — Developer Portfolio</title>
+
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+
+    <meta name="theme-color" content="__THEME_COLOR__" />
+
+    <!-- Preload critical fonts -->
+    <link rel="preload" as="font" type="font/woff2" href="/fonts/dm-sans.woff2" crossorigin />
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      href="/fonts/playfair-display.woff2"
+      crossorigin
+    />
+
+    <!-- Preload the profile picture — it's the LCP image on the About page -->
+    <link rel="preload" as="image" href="/pfp.webp" type="image/webp" />
+
+    <!--
+      NOTE: The theme flash-prevention script is injected here automatically by
+      the `inject-theme-script` Vite plugin defined in vite.config.ts.
+      Do not add it manually — it is generated at build/serve time from
+      the THEMES object in src/data/config.ts.
+    -->
+  </head>
   <body>
-    <section class="section--page" id="stars">
-      <div id="stars1"></div>
-      <div id="stars2"></div>
-      <div id="stars3"></div>
-    </section>
-    <div id="container--main">
-      <section class="section--page" id="wrapper--hero">
-        <img
-          src="assets/avatar.png"
-          alt="Dikhit Das"
-          id="profile-pic"
-          title="Dikhit Das"
-        />
-        <div>
-          <h1 id="name">Dikhit Das</h1>
-          <div id="user-name">
-            <span>&#64;ikrdikhit</span>
-            <!-- <span>&#64;fakedarkdev</span> -->
-            <!-- <span>&#64;fake.dark.dev</span> -->
-          </div>
-          <p id="bio">
-            Teen from India currently freelancing.
-            <br />
-            CEO and Co-Founder at
-            <a href="https://spicydevs.js.org/">Spicydevs</a>
-            <br />
-            Mail me at:
-            <a href="mailto:dikhitdas@outlook.com">dikhitdas@outlook.com</a>.
-          </p>
-        </div>
-      </section>
-      <section class="section--page">
-        <div id="socials--list">
-          <a href="https://github.com/ikrdikhit" target="_blank"
-            ><img
-              src="assets/icons/github.svg"
-              alt="GitHub"
-              title="GitHub" /></a
-          ><a href="https://x.com/ikrdikhit" target=" _blank"
-            ><img src="assets/icons/twitter.svg" alt="X" title="X" /></a
-          ><a href="https://spicydevs.js.org/discord" target="_blank"
-            ><img src="assets/icons/discord.svg" alt="Discord" title="Discord"
-          /></a>
-          <a href="./links"
-            ><img
-              src="assets/icons/ellipsis-solid.svg"
-              alt="More Links"
-              title="More Links"
-          /></a>
-        </div>
-      </section>
-      <section class="section--page">
-        <h2>Skills & Qualifications</h2>
-        <ul id="qualifications--list">
-          <li>&gt;1 year experience in Web Development</li>
-          <li>Experience in using Linux</li>
-          <li>Experience in devloping Discord Bots</li>
-          <li>Open Source Contributor</li>
-          <li>Knowledge of Git & GitHub</li>
-        </ul>
-      </section>
-      <section class="section--page">
-        <h2>Tech stack</h2>
-        <div id="wrapper--techstack__items">
-          <div class="card--techstack"><span>HTML, CSS, JS</span></div>
-          <div class="card--techstack">
-            <span>Bootstrap & TailwindCSS</span>
-          </div>
-          <div class="card--techstack">
-            <span>NodeJS, Python, Lua, Bash</span>
-          </div>
-          <div class="card--techstack"><span>Git & GitHub</span></div>
-          <!-- <div class="card--techstack"><span>MongoDB</span></div> -->
-          <div class="card--techstack"><span>Linux</span></div>
-        </div>
-      </section>
-      <section class="section--page" id="work-history-wrapper">
-        <h2>Projects</h2>
-        <div class="line-break"></div>
-        <div class="card--work-history">
-          <strong>Portfolio</strong>
-          <p>This Website</p>
-          <button class="button" onclick='window.open("#")'>
-            Visit <img src="/assets/icons/newtab.svg" />
-          </button>
-          <button
-            class="button"
-            onclick='window.open("https://github.com/ikrdikhit/ikrdikhit.github.io","_blank")'
-          >
-            Source Code
-            <img src="/assets/icons/newtab.svg" />
-          </button>
-        </div>
-        <div class="line-break"></div>
-        <div class="card--work-history">
-          <strong>Currently working on more Projects</strong>
-        </div>
-        <!-- <div class="line-break"></div>
-        <div class="card--work-history">
-          <strong>NAME</strong>
-          <p>DESCRIPTION</p>
-          <button
-            class="button"
-            onclick='window.open("LINK","_blank")'
-          >
-            Visit <img src="/assets/icons/newtab.svg" />
-          </button>
-          <button
-            class="button"
-            onclick='window.open("https://github.com/ikrdikhit/project-name","_blank")'
-          >
-            Source Code
-            <img src="/assets/icons/newtab.svg" />
-          </button>
-        </div> -->
-      </section>
-      <div class="line-break"></div>
-      <p align="center" style="font-size: 28px">
-        Thanks for visiting<span style="font-size: 35px"> &lt;</span>3
-      </p>
-      <button id="go-top-btn">
-        <img src="/assets/icons/up.svg" /></button
-      ><button id="goBottom">
-        <img src="/assets/icons/down.svg" />
-      </button>
+    <!--
+      Font-aware loading screen.
+      Stays visible until document.fonts.ready resolves AND React has mounted.
+      #font-loader sits outside #root so React never touches it.
+      Both conditions must be true before it fades — whichever finishes last wins.
+    -->
+    <div
+      id="font-loader"
+      aria-hidden="true"
+      style="
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        background: __THEME_COLOR__;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: opacity 0.4s ease;
+      "
+    >
+      <div style="display: flex; gap: 8px">
+        <span
+          style="
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: __BORDER_COLOR__;
+            animation: ldpulse 1s ease-in-out infinite;
+            animation-delay: 0ms;
+          "
+        ></span>
+        <span
+          style="
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #333333;
+            animation: ldpulse 1s ease-in-out infinite;
+            animation-delay: 200ms;
+          "
+        ></span>
+        <span
+          style="
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #333333;
+            animation: ldpulse 1s ease-in-out infinite;
+            animation-delay: 400ms;
+          "
+        ></span>
+      </div>
     </div>
-    <script src="assets/js/script.js"></script>
+
+    <style>
+      @keyframes ldpulse {
+        0%,
+        100% {
+          opacity: 0.3;
+          transform: scale(0.8);
+        }
+        50% {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+    </style>
+
+    <script>
+      // Two gates: fonts ready + React mounted. Both must pass before hiding.
+      // React signals readiness by calling window.__onAppMounted() from main.tsx.
+      (function () {
+        var fontsReady = false;
+        var appMounted = false;
+
+        function maybeHide() {
+          if (!fontsReady || !appMounted) return;
+          var el = document.getElementById('font-loader');
+          if (!el) return;
+          el.style.opacity = '0';
+          setTimeout(function () {
+            el.remove();
+          }, 420);
+        }
+
+        // Gate 1: fonts
+        document.fonts.ready.then(function () {
+          fontsReady = true;
+          maybeHide();
+        });
+
+        // Gate 2: React — main.tsx calls this after createRoot renders
+        window.__onAppMounted = function () {
+          appMounted = true;
+          maybeHide();
+        };
+
+        // Safety valve: never block longer than 4s on very slow connections
+        setTimeout(function () {
+          fontsReady = true;
+          appMounted = true;
+          maybeHide();
+        }, 4000);
+      })();
+    </script>
+
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
