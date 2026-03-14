@@ -127,7 +127,7 @@
 
 <div align="center">
 
-[![Tech Stack](https://skillicons.dev/icons?i=react,vite,ts,tailwind,md&theme=dark)](https://skillicons.dev)
+![Tech Stack](https://skillicons.dev/icons?i=react,vite,ts,tailwind,md&theme=dark)
 
 </div>
 
