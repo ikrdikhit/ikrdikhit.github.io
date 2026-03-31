@@ -11,13 +11,12 @@
 
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
 
     <meta name="theme-color" content="__THEME_COLOR__" />
 
-    <!-- Preload critical fonts -->
+    <!-- Preload critical above-the-fold fonts -->
     <link rel="preload" as="font" type="font/woff2" href="/fonts/dm-sans.woff2" crossorigin />
     <link
       rel="preload"
@@ -26,9 +25,16 @@
       href="/fonts/playfair-display.woff2"
       crossorigin
     />
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      href="/fonts/playfair-display-italic.woff2"
+      crossorigin
+    />
 
-    <!-- Preload the profile picture — it's the LCP image on the About page -->
-    <link rel="preload" as="image" href="/pfp.webp" type="image/webp" />
+    <!-- About-page profile picture is not above-the-fold on Home; prefetch instead -->
+    <link rel="prefetch" as="image" href="/pfp.webp" type="image/webp" />
 
     <!--
       NOTE: The theme flash-prevention script is injected here automatically by

@@ -84,6 +84,10 @@ function HoverPrefetch() {
     const handleOver = (e: MouseEvent | FocusEvent) => {
       const anchor = (e.target as Element)?.closest('a[href]') as HTMLAnchorElement | null;
       if (!anchor) return;
+      if (e instanceof MouseEvent) {
+        const from = e.relatedTarget as Node | null;
+        if (from && anchor.contains(from)) return;
+      }
       const href = anchor.getAttribute('href');
       if (!href) return;
       if (href.startsWith('/')) {
@@ -95,10 +99,10 @@ function HoverPrefetch() {
       }
     };
 
-    document.addEventListener('pointerover', handleOver as EventListener, { passive: true });
+    document.addEventListener('mouseover', handleOver as EventListener, { passive: true });
     document.addEventListener('focusin', handleOver as EventListener, { passive: true });
     return () => {
-      document.removeEventListener('pointerover', handleOver as EventListener);
+      document.removeEventListener('mouseover', handleOver as EventListener);
       document.removeEventListener('focusin', handleOver as EventListener);
     };
   }, []);
