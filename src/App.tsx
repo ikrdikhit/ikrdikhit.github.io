@@ -30,13 +30,19 @@ function RouteAnnouncer() {
   const [announcement, setAnnouncement] = useState('');
   const firstRender = useRef(true);
 
+  const getPathFallbackTitle = (path: string) => {
+    if (path === '/') return 'Home';
+    const segment = path.split('/').filter(Boolean).at(-1) ?? 'Page';
+    return segment.replace(/[-_]+/g, ' ');
+  };
+
   useEffect(() => {
     // Skip the very first render — the browser already handles that.
     if (firstRender.current) {
       firstRender.current = false;
       return;
     }
-    const title = document.title || pathname;
+    const title = document.title || getPathFallbackTitle(pathname);
     setAnnouncement('');
     // Double-rAF ensures the live region has cleared before we set new text,
     // so screen readers always fire a fresh announcement.
