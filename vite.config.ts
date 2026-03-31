@@ -3,7 +3,8 @@ import react from '@vitejs/plugin-react';
 import fs from 'fs';
 import path from 'path';
 import { defineConfig, type Plugin } from 'vite';
-import { PERSONAL_INFO, THEMES, ACTIVE_THEME } from './src/data/config';
+import { PERSONAL_INFO } from './src/data/config';
+import { THEMES, ACTIVE_THEME } from './src/data/colors.config';
 
 function transformHtmlPlugin(): Plugin {
   return {
@@ -33,6 +34,7 @@ function webmanifestPlugin(): Plugin {
         theme_color: THEMES[ACTIVE_THEME].bgBase,
         icons: [
           { src: '/favicon-96x96.png', sizes: '96x96', type: 'image/png' },
+          { src: '/favicon.svg', sizes: 'any', type: 'image/svg+xml' },
           { src: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
         ],
       },

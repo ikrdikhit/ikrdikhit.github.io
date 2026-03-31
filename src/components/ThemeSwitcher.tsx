@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { PiPaintBrush } from 'react-icons/pi';
-import { THEMES, MISC_INFO } from '../data/config';
+import { MISC_INFO } from '../data/config';
+import { THEMES } from '../data/colors.config';
 import { useTheme } from '../context/ThemeContext';
 import BasePopup from './BasePopup';
 

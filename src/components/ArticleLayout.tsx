@@ -1,18 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, useScroll, useSpring } from 'motion/react';
-import { PERSONAL_INFO, THEME } from '../data/config';
+import { PERSONAL_INFO } from '../data/config';
 import Markdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-import { createLowlight, common } from 'lowlight';
+import { createLowlight } from 'lowlight';
 import { toJsxRuntime } from 'hast-util-to-jsx-runtime';
 import { Fragment, jsx, jsxs } from 'react/jsx-runtime';
+import { HIGHLIGHT_LANGUAGE_ENTRIES } from '../data/languages.config';
 
 import { PiCheck, PiCopy, PiArrowLeft } from 'react-icons/pi';
 import SEO from './SEO';
 import TableOfContents from './TableOfContents';
 
-const lowlight = createLowlight(common);
+const lowlight = createLowlight();
+for (const [name, grammar] of HIGHLIGHT_LANGUAGE_ENTRIES) {
+  lowlight.register(name, grammar);
+}
 
 function highlightCode(code: string, language: string): React.ReactNode {
   try {
@@ -248,7 +252,7 @@ export default function ArticleLayout({
 
       <motion.div
         className="fixed top-0 left-0 right-0 h-1 origin-left z-50"
-        style={{ scaleX, backgroundColor: THEME.accent }}
+        style={{ scaleX, backgroundColor: 'var(--accent)' }}
       />
 
       <nav aria-label="Table of contents">

@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { PiArrowRight } from 'react-icons/pi';
 import { BlogPost } from '../data/blogs';
-import { THEME } from '../data/config';
 
 interface BlogCardProps {
   post: BlogPost;
@@ -30,7 +29,7 @@ const BlogCard = React.memo(({ post, index = 0 }: BlogCardProps) => {
       <Link
         to={`/blogs/${post.slug}`}
         onMouseEnter={handleMouseEnter}
-        className={`group flex flex-col md:flex-row gap-8 p-6 rounded-3xl border border-border bg-raised hover:bg-hover transition-colors block outline-none focus-visible:ring-2 focus-visible:ring-[${THEME.accent}]`}
+        className="group flex flex-col md:flex-row gap-8 p-6 rounded-3xl border border-border bg-raised hover:bg-hover transition-colors block outline-none focus-visible:ring-2 focus-visible:ring-accent"
         aria-label={`Read article: ${post.title}`}
       >
         <article className="flex flex-col md:flex-row gap-8 w-full">
