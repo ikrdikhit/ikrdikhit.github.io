@@ -178,10 +178,47 @@ export default defineConfig(() => {
       chunkSizeWarningLimit: 800,
       rollupOptions: {
         output: {
-          manualChunks: {
-            'vendor-react': ['react', 'react-dom', 'react-router-dom'],
-            'vendor-framer': ['motion'],
-            'vendor-syntax': ['react-syntax-highlighter'],
+          manualChunks(id) {
+            // Core React runtime — loaded on every page
+            if (
+              id.includes('/node_modules/react/') ||
+              id.includes('/node_modules/react-dom/') ||
+              id.includes('/node_modules/scheduler/')
+            ) {
+              return 'vendor-react';
+            }
+            // React Router — loaded on every page alongside React
+            if (id.includes('/node_modules/react-router')) {
+              return 'vendor-router';
+            }
+            // Motion (Framer) — only used on pages with animations
+            if (id.includes('/node_modules/motion/')) {
+              return 'vendor-motion';
+            }
+            // Syntax highlighting + markdown AST utilities:
+            // lowlight, highlight.js, hast-*, unist-*, micromark-*, remark-*, react-markdown
+            // These are all lazy-loaded as part of ArticleLayout and are not needed
+            // until the user visits a blog or project page.
+            if (
+              id.includes('/node_modules/lowlight/') ||
+              id.includes('/node_modules/highlight.js/') ||
+              id.includes('/node_modules/hast') ||
+              id.includes('/node_modules/unist') ||
+              id.includes('/node_modules/mdast') ||
+              id.includes('/node_modules/remark') ||
+              id.includes('/node_modules/rehype') ||
+              id.includes('/node_modules/micromark') ||
+              id.includes('/node_modules/react-markdown') ||
+              id.includes('/node_modules/remark-gfm') ||
+              id.includes('/node_modules/vfile') ||
+              id.includes('/node_modules/property-information') ||
+              id.includes('/node_modules/space-separated-tokens') ||
+              id.includes('/node_modules/comma-separated-tokens') ||
+              id.includes('/node_modules/decode-named-character-reference') ||
+              id.includes('/node_modules/character-entities')
+            ) {
+              return 'vendor-markdown';
+            }
           },
         },
       },

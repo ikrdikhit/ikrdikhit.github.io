@@ -4,40 +4,24 @@ import { motion, useScroll, useSpring } from 'motion/react';
 import { PERSONAL_INFO, THEME } from '../data/config';
 import Markdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-import { PrismLight as SyntaxHighlighter } from 'react-syntax-highlighter';
-
-// Import optimized languages
-import tsx from 'react-syntax-highlighter/dist/esm/languages/prism/tsx';
-import jsx from 'react-syntax-highlighter/dist/esm/languages/prism/jsx';
-import python from 'react-syntax-highlighter/dist/esm/languages/prism/python';
-import bash from 'react-syntax-highlighter/dist/esm/languages/prism/bash';
-import markdown from 'react-syntax-highlighter/dist/esm/languages/prism/markdown';
-import css from 'react-syntax-highlighter/dist/esm/languages/prism/css';
-import javascript from 'react-syntax-highlighter/dist/esm/languages/prism/javascript';
-import typescript from 'react-syntax-highlighter/dist/esm/languages/prism/typescript';
-import markup from 'react-syntax-highlighter/dist/esm/languages/prism/markup';
-import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import { createLowlight, common } from 'lowlight';
+import { toJsxRuntime } from 'hast-util-to-jsx-runtime';
+import { Fragment, jsx, jsxs } from 'react/jsx-runtime';
 
 import { PiCheck, PiCopy, PiArrowLeft } from 'react-icons/pi';
 import SEO from './SEO';
 import TableOfContents from './TableOfContents';
 
-// Register languages
-SyntaxHighlighter.registerLanguage('tsx', tsx);
-SyntaxHighlighter.registerLanguage('jsx', jsx);
-SyntaxHighlighter.registerLanguage('javascript', javascript);
-SyntaxHighlighter.registerLanguage('js', javascript);
-SyntaxHighlighter.registerLanguage('typescript', typescript);
-SyntaxHighlighter.registerLanguage('ts', typescript);
-SyntaxHighlighter.registerLanguage('python', python);
-SyntaxHighlighter.registerLanguage('bash', bash);
-SyntaxHighlighter.registerLanguage('sh', bash);
-SyntaxHighlighter.registerLanguage('zsh', bash);
-SyntaxHighlighter.registerLanguage('markdown', markdown);
-SyntaxHighlighter.registerLanguage('css', css);
-SyntaxHighlighter.registerLanguage('markup', markup);
-SyntaxHighlighter.registerLanguage('xml', markup);
-SyntaxHighlighter.registerLanguage('html', markup);
+const lowlight = createLowlight(common);
+
+function highlightCode(code: string, language: string): React.ReactNode {
+  try {
+    const tree = lowlight.highlight(language, code);
+    return toJsxRuntime(tree, { Fragment, jsx, jsxs });
+  } catch {
+    return <>{code}</>;
+  }
+}
 
 interface CodeBlockProps {
   node?: unknown;
@@ -47,7 +31,7 @@ interface CodeBlockProps {
   [key: string]: unknown;
 }
 
-const CodeBlock = ({ inline, className, children, ...props }: CodeBlockProps) => {
+const CodeBlock = ({ inline, className, children }: CodeBlockProps) => {
   const match = /language-(\w+)/.exec(className || '');
   const [copied, setCopied] = useState(false);
   const codeString = String(children).replace(/\n$/, '');
@@ -103,21 +87,12 @@ const CodeBlock = ({ inline, className, children, ...props }: CodeBlockProps) =>
         </button>
       </figcaption>
       <pre className="p-2 overflow-x-auto">
-        <SyntaxHighlighter
-          {...(props as Record<string, unknown>)}
-          style={vscDarkPlus}
-          language={match[1]}
-          PreTag="div"
-          customStyle={{
-            margin: 0,
-            padding: '0.75rem',
-            background: 'transparent',
-            fontSize: '0.875rem',
-            lineHeight: '1.5',
-          }}
+        <code
+          className="hljs block p-3 text-sm leading-6"
+          aria-label={`${match[1]} code block`}
         >
-          {codeString}
-        </SyntaxHighlighter>
+          {highlightCode(codeString, match[1])}
+        </code>
       </pre>
     </figure>
   ) : (
@@ -253,10 +228,22 @@ export default function ArticleLayout({
         title={`${title} | ${PERSONAL_INFO.name}`}
         description={description}
         image={image}
+        imageAlt={title}
         type={seoType}
         url={typeof window !== 'undefined' ? window.location.href : undefined}
         datePublished={datePublished}
         dateModified={datePublished}
+        tags={tags}
+        breadcrumbs={[
+          {
+            name: contentFolder === 'blogs' ? 'Blogs' : 'Projects',
+            url: `${PERSONAL_INFO.baseUrl}/${contentFolder}`,
+          },
+          {
+            name: title,
+            url: typeof window !== 'undefined' ? window.location.href : PERSONAL_INFO.baseUrl,
+          },
+        ]}
       />
 
       <motion.div
