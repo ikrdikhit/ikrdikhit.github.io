@@ -33,7 +33,9 @@ function RouteAnnouncer() {
   const getPathFallbackTitle = (path: string) => {
     if (path === '/') return 'Home';
     const segment = path.split('/').filter(Boolean).at(-1) ?? 'Page';
-    return segment.replace(/[-_]+/g, ' ');
+    return segment
+      .replace(/[-_]+/g, ' ')
+      .replace(/\b\w/g, (char) => char.toUpperCase());
   };
 
   useEffect(() => {
