@@ -1,25 +1,16 @@
-import { lazy, Suspense, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { PERSONAL_INFO } from './data/config';
-import Loading from './components/Loading';
 import ThemeSwitcher from './components/ThemeSwitcher';
+import Home from './pages/Home';
+import AboutMe from './pages/AboutMe';
+import NotFound from './pages/NotFound';
+import Links from './pages/Links';
+import BlogList from './pages/BlogList';
+import BlogPost from './pages/BlogPost';
+import ProjectCatalogue from './pages/ProjectCatalogue';
+import Project from './pages/Project';
 
-const Home = lazy(() => import('./pages/Home'));
-const AboutMe = lazy(() => import('./pages/AboutMe'));
-const NotFound = lazy(() => import('./pages/NotFound'));
-const Links = lazy(() => import('./pages/Links'));
-const BlogList = lazy(() => import('./pages/BlogList'));
-const BlogPost = lazy(() => import('./pages/BlogPost'));
-const ProjectCatalogue = lazy(() => import('./pages/ProjectCatalogue'));
-const Project = lazy(() => import('./pages/Project'));
-
-/** Map from pathname prefix → lazy import thunk for predictive prefetching. */
-const PREFETCH_MAP: Record<string, () => Promise<unknown>> = {
-  '/about': () => import('./pages/AboutMe'),
-  '/projects': () => import('./pages/ProjectCatalogue'),
-  '/blogs': () => import('./pages/BlogList'),
-  '/links': () => import('./pages/Links'),
-};
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -78,71 +69,22 @@ function RouteAnnouncer() {
   );
 }
 
-/**
- * Listens for mouseover / focusin on internal <a> elements at the document
- * level and fires the corresponding lazy import so the chunk is downloaded
- * before the user clicks — zero changes to individual Link components needed.
- */
-function HoverPrefetch() {
-  useEffect(() => {
-    const prefetched = new Set<string>();
-    const prefixes = Object.keys(PREFETCH_MAP);
-
-    const prefetchPath = (pathname: string) => {
-      if (prefetched.has(pathname)) return;
-      const match = prefixes.find((prefix) => pathname.startsWith(prefix));
-      if (!match) return;
-      prefetched.add(pathname);
-      PREFETCH_MAP[match]();
-    };
-
-    const handleOver = (e: MouseEvent | FocusEvent) => {
-      const anchor = (e.target as Element)?.closest('a[href]') as HTMLAnchorElement | null;
-      if (!anchor) return;
-      if (e instanceof MouseEvent) {
-        const from = e.relatedTarget as Node | null;
-        if (from && anchor.contains(from)) return;
-      }
-      const href = anchor.getAttribute('href');
-      if (!href) return;
-      if (href.startsWith('/')) {
-        prefetchPath(href);
-        return;
-      }
-      if (href.startsWith(window.location.origin)) {
-        prefetchPath(new URL(href).pathname);
-      }
-    };
-
-    document.addEventListener('mouseover', handleOver as EventListener, { passive: true });
-    document.addEventListener('focusin', handleOver as EventListener, { passive: true });
-    return () => {
-      document.removeEventListener('mouseover', handleOver as EventListener);
-      document.removeEventListener('focusin', handleOver as EventListener);
-    };
-  }, []);
-  return null;
-}
-
 export default function App() {
   return (
     <BrowserRouter>
       <ScrollToTop />
       <RouteAnnouncer />
-      <HoverPrefetch />
       <ThemeSwitcher />
-      <Suspense fallback={<Loading />}>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/about" element={<AboutMe />} />
-          {PERSONAL_INFO.showProjects && <Route path="/projects" element={<ProjectCatalogue />} />}
-          {PERSONAL_INFO.showProjects && <Route path="/projects/:id" element={<Project />} />}
-          {PERSONAL_INFO.showBlog && <Route path="/blogs" element={<BlogList />} />}
-          {PERSONAL_INFO.showBlog && <Route path="/blogs/:id" element={<BlogPost />} />}
-          {PERSONAL_INFO.showLinks && <Route path="/links" element={<Links />} />}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </Suspense>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/about" element={<AboutMe />} />
+        {PERSONAL_INFO.showProjects && <Route path="/projects" element={<ProjectCatalogue />} />}
+        {PERSONAL_INFO.showProjects && <Route path="/projects/:id" element={<Project />} />}
+        {PERSONAL_INFO.showBlog && <Route path="/blogs" element={<BlogList />} />}
+        {PERSONAL_INFO.showBlog && <Route path="/blogs/:id" element={<BlogPost />} />}
+        {PERSONAL_INFO.showLinks && <Route path="/links" element={<Links />} />}
+        <Route path="*" element={<NotFound />} />
+      </Routes>
     </BrowserRouter>
   );
 }
