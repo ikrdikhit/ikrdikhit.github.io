@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
-import { THEMES, ACTIVE_THEME, type Theme } from '../data/config';
+import { THEMES, ACTIVE_THEME, type Theme } from '../data/colors.config';
 
 type ThemeContextValue = {
   themeName: string;
@@ -22,6 +22,16 @@ function applyTheme(theme: Theme) {
   r.style.setProperty('--border-subtle', theme.borderSubtle);
   r.style.setProperty('--accent', theme.accent);
   r.style.setProperty('--accent-fg', theme.accentFg);
+  r.style.setProperty('--code-text', theme.codeText);
+  r.style.setProperty('--code-comment', theme.codeComment);
+  r.style.setProperty('--code-keyword', theme.codeKeyword);
+  r.style.setProperty('--code-type', theme.codeType);
+  r.style.setProperty('--code-string', theme.codeString);
+  r.style.setProperty('--code-meta', theme.codeMeta);
+  r.style.setProperty('--code-number', theme.codeNumber);
+  r.style.setProperty('--code-title', theme.codeTitle);
+  r.style.setProperty('--code-variable', theme.codeVariable);
+  r.style.setProperty('--code-deletion', theme.codeDeletion);
 
   document.querySelector('meta[name="theme-color"]')?.setAttribute('content', theme.bgBase);
 }

@@ -1,17 +1,16 @@
-import { lazy, Suspense, useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { PERSONAL_INFO } from './data/config';
-import Loading from './components/Loading';
 import ThemeSwitcher from './components/ThemeSwitcher';
+import Home from './pages/Home';
+import AboutMe from './pages/AboutMe';
+import NotFound from './pages/NotFound';
+import Links from './pages/Links';
+import BlogList from './pages/BlogList';
+import BlogPost from './pages/BlogPost';
+import ProjectCatalogue from './pages/ProjectCatalogue';
+import Project from './pages/Project';
 
-const Home = lazy(() => import('./pages/Home'));
-const AboutMe = lazy(() => import('./pages/AboutMe'));
-const NotFound = lazy(() => import('./pages/NotFound'));
-const Links = lazy(() => import('./pages/Links'));
-const BlogList = lazy(() => import('./pages/BlogList'));
-const BlogPost = lazy(() => import('./pages/BlogPost'));
-const ProjectCatalogue = lazy(() => import('./pages/ProjectCatalogue'));
-const Project = lazy(() => import('./pages/Project'));
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -21,60 +20,79 @@ function ScrollToTop() {
   return null;
 }
 
-// Shows the Loading screen between route changes so the user gets instant
-// feedback while a lazy chunk downloads. Works by listening to location
-// changes — on change it flips to loading, then Suspense takes over and
-// shows the fallback until the new page renders, at which point this
-// component re-renders with the new pathname and clears itself.
-function NavigationLoader({ children }: { children: React.ReactNode }) {
-  const location = useLocation();
-  const [displayLocation, setDisplayLocation] = useState(location);
-  const [isNavigating, setIsNavigating] = useState(false);
+/**
+ * Announces page title to screen readers after each route change.
+ * The live region is visually hidden but always in the DOM so AT can
+ * observe the mutation and read it aloud without a page reload.
+ */
+function RouteAnnouncer() {
+  const { pathname } = useLocation();
+  const [announcement, setAnnouncement] = useState('');
+  const firstRender = useRef(true);
+
+  const getPathFallbackTitle = (path: string) => {
+    if (path === '/') return 'Home';
+    const segment = path.split('/').filter(Boolean).at(-1) ?? 'Page';
+    return segment
+      .replace(/[-_]+/g, ' ')
+      .replace(/\b\w/g, (char) => char.toUpperCase());
+  };
 
   useEffect(() => {
-    if (location.pathname !== displayLocation.pathname) {
-      setIsNavigating(true);
+    // Skip the very first render — the browser already handles that.
+    if (firstRender.current) {
+      firstRender.current = false;
+      return;
     }
-  }, [location, displayLocation]);
+    const title = document.title || getPathFallbackTitle(pathname);
+    setAnnouncement('');
+    // Double-rAF ensures the live region has cleared before we set new text,
+    // so screen readers always fire a fresh announcement.
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        setAnnouncement(`Navigated to ${title}`);
+      });
+    });
+  }, [pathname]);
 
-  // Once Suspense resolves and children re-render with the new route,
-  // the effect above won't fire again — we clear the loading state here
-  // after a microtask so the spinner doesn't flash on cached chunks.
-  useEffect(() => {
-    if (isNavigating) {
-      const id = setTimeout(() => {
-        setDisplayLocation(location);
-        setIsNavigating(false);
-      }, 0);
-      return () => clearTimeout(id);
-    }
-  }, [isNavigating, location]);
-
-  if (isNavigating) return <Loading />;
-  return <>{children}</>;
+  return (
+    <p
+      role="status"
+      aria-live="polite"
+      aria-atomic="true"
+      style={{
+        border: 0,
+        clip: 'rect(0 0 0 0)',
+        height: '1px',
+        margin: '-1px',
+        overflow: 'hidden',
+        padding: 0,
+        position: 'absolute',
+        whiteSpace: 'nowrap',
+        width: '1px',
+      }}
+    >
+      {announcement}
+    </p>
+  );
 }
 
 export default function App() {
   return (
     <BrowserRouter>
       <ScrollToTop />
+      <RouteAnnouncer />
       <ThemeSwitcher />
-      <Suspense fallback={<Loading />}>
-        <NavigationLoader>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/about" element={<AboutMe />} />
-            {PERSONAL_INFO.showProjects && (
-              <Route path="/projects" element={<ProjectCatalogue />} />
-            )}
-            {PERSONAL_INFO.showProjects && <Route path="/projects/:id" element={<Project />} />}
-            {PERSONAL_INFO.showBlog && <Route path="/blogs" element={<BlogList />} />}
-            {PERSONAL_INFO.showBlog && <Route path="/blogs/:id" element={<BlogPost />} />}
-            {PERSONAL_INFO.showLinks && <Route path="/links" element={<Links />} />}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </NavigationLoader>
-      </Suspense>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/about" element={<AboutMe />} />
+        {PERSONAL_INFO.showProjects && <Route path="/projects" element={<ProjectCatalogue />} />}
+        {PERSONAL_INFO.showProjects && <Route path="/projects/:id" element={<Project />} />}
+        {PERSONAL_INFO.showBlog && <Route path="/blogs" element={<BlogList />} />}
+        {PERSONAL_INFO.showBlog && <Route path="/blogs/:id" element={<BlogPost />} />}
+        {PERSONAL_INFO.showLinks && <Route path="/links" element={<Links />} />}
+        <Route path="*" element={<NotFound />} />
+      </Routes>
     </BrowserRouter>
   );
 }

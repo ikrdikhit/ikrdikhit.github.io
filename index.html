@@ -17,7 +17,7 @@
 
     <meta name="theme-color" content="__THEME_COLOR__" />
 
-    <!-- Preload critical fonts -->
+    <!-- Preload critical above-the-fold fonts -->
     <link rel="preload" as="font" type="font/woff2" href="/fonts/dm-sans.woff2" crossorigin />
     <link
       rel="preload"
@@ -26,9 +26,16 @@
       href="/fonts/playfair-display.woff2"
       crossorigin
     />
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      href="/fonts/playfair-display-italic.woff2"
+      crossorigin
+    />
 
-    <!-- Preload the profile picture — it's the LCP image on the About page -->
-    <link rel="preload" as="image" href="/pfp.webp" type="image/webp" />
+    <!-- About-page profile picture is not above-the-fold on Home; prefetch instead -->
+    <link rel="prefetch" as="image" href="/pfp.webp" type="image/webp" />
 
     <!--
       NOTE: The theme flash-prevention script is injected here automatically by
@@ -40,112 +47,6 @@
     <meta name="google-site-verification" content="9GTj5XZ6eWdYfaN8WeNatqyIrAppUiZMDAKyhJzChfI" />
   </head>
   <body>
-    <!--
-      Font-aware loading screen.
-      Stays visible until document.fonts.ready resolves AND React has mounted.
-      #font-loader sits outside #root so React never touches it.
-      Both conditions must be true before it fades — whichever finishes last wins.
-    -->
-    <div
-      id="font-loader"
-      aria-hidden="true"
-      style="
-        position: fixed;
-        inset: 0;
-        z-index: 9999;
-        background: __THEME_COLOR__;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: opacity 0.4s ease;
-      "
-    >
-      <div style="display: flex; gap: 8px">
-        <span
-          style="
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: __BORDER_COLOR__;
-            animation: ldpulse 1s ease-in-out infinite;
-            animation-delay: 0ms;
-          "
-        ></span>
-        <span
-          style="
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: #333333;
-            animation: ldpulse 1s ease-in-out infinite;
-            animation-delay: 200ms;
-          "
-        ></span>
-        <span
-          style="
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: #333333;
-            animation: ldpulse 1s ease-in-out infinite;
-            animation-delay: 400ms;
-          "
-        ></span>
-      </div>
-    </div>
-
-    <style>
-      @keyframes ldpulse {
-        0%,
-        100% {
-          opacity: 0.3;
-          transform: scale(0.8);
-        }
-        50% {
-          opacity: 1;
-          transform: scale(1);
-        }
-      }
-    </style>
-
-    <script>
-      // Two gates: fonts ready + React mounted. Both must pass before hiding.
-      // React signals readiness by calling window.__onAppMounted() from main.tsx.
-      (function () {
-        var fontsReady = false;
-        var appMounted = false;
-
-        function maybeHide() {
-          if (!fontsReady || !appMounted) return;
-          var el = document.getElementById('font-loader');
-          if (!el) return;
-          el.style.opacity = '0';
-          setTimeout(function () {
-            el.remove();
-          }, 420);
-        }
-
-        // Gate 1: fonts
-        document.fonts.ready.then(function () {
-          fontsReady = true;
-          maybeHide();
-        });
-
-        // Gate 2: React — main.tsx calls this after createRoot renders
-        window.__onAppMounted = function () {
-          appMounted = true;
-          maybeHide();
-        };
-
-        // Safety valve: never block longer than 4s on very slow connections
-        setTimeout(function () {
-          fontsReady = true;
-          appMounted = true;
-          maybeHide();
-        }, 4000);
-      })();
-    </script>
-
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

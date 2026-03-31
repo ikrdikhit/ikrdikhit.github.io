@@ -14,6 +14,8 @@
     "format": "prettier --write ."
   },
   "dependencies": {
+    "hast-util-to-jsx-runtime": "^2.3.6",
+    "lowlight": "^3.3.0",
     "motion": "^12.23.24",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
@@ -22,7 +24,6 @@
     "react-loading-skeleton": "^3.5.0",
     "react-markdown": "^10.1.0",
     "react-router-dom": "^7.13.1",
-    "react-syntax-highlighter": "^16.1.1",
     "remark-gfm": "^4.0.1"
   },
   "devDependencies": {
@@ -30,7 +31,6 @@
     "@tailwindcss/vite": "^4.1.14",
     "@types/express": "^4.17.21",
     "@types/node": "^22.14.0",
-    "@types/react-syntax-highlighter": "^15.5.13",
     "@vitejs/plugin-react": "^5.0.4",
     "better-sqlite3": "^12.4.1",
     "dotenv": "^17.2.3",

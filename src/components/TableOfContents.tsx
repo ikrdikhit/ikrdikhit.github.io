@@ -9,7 +9,7 @@ import {
   PiArrowsInLineVertical,
   PiArrowsOutLineVertical,
 } from 'react-icons/pi';
-import { THEME, MISC_INFO } from '../data/config';
+import { MISC_INFO } from '../data/config';
 
 interface Heading {
   id: string;
@@ -348,12 +348,12 @@ export default function TableOfContents({ headings }: { headings: Heading[] }) {
                 <div
                   aria-hidden="true"
                   className="absolute left-0 w-1.5 h-1.5 rounded-full pointer-events-none transition-all duration-200 ease-out"
-                  style={{
-                    top: indicatorStyle.top,
-                    opacity: indicatorStyle.opacity,
-                    backgroundColor: THEME.accent,
-                  }}
-                />
+                   style={{
+                     top: indicatorStyle.top,
+                     opacity: indicatorStyle.opacity,
+                     backgroundColor: 'var(--accent)',
+                   }}
+                 />
                 <ul ref={listRef} className="flex flex-col gap-2 list-none p-0 m-0">
                   {headings.map((heading, index) => (
                     <HeadingButton key={heading.id} heading={heading} index={index} />

@@ -1,3 +1,61 @@
+/*
+ * Metric-adjusted fallback fonts — inserted into the font stack BEFORE the
+ * custom fonts so the browser renders with near-identical glyph metrics while
+ * DM Sans / Playfair Display download.  When the real fonts swap in the glyphs
+ * are already the right size, so no layout shift (CLS ≈ 0) occurs.
+ *
+ * Values calibrated against DM Sans v1.0 (variable) and Playfair Display v1.3
+ * using the Arial / Georgia system fonts as the local() sources.
+ */
+
+/* DM Sans normal — adjusted Arial fallback */
+@font-face {
+  font-family: 'DM Sans Fallback';
+  font-style: normal;
+  font-weight: 100 1000;
+  src: local('Arial');
+  ascent-override: 94%;
+  descent-override: 24%;
+  line-gap-override: 0%;
+  size-adjust: 100%;
+}
+
+/* DM Sans italic — adjusted Arial Italic fallback */
+@font-face {
+  font-family: 'DM Sans Fallback';
+  font-style: italic;
+  font-weight: 100 1000;
+  src: local('Arial Italic');
+  ascent-override: 94%;
+  descent-override: 24%;
+  line-gap-override: 0%;
+  size-adjust: 100%;
+}
+
+/* Playfair Display normal — adjusted Georgia fallback */
+@font-face {
+  font-family: 'Playfair Display Fallback';
+  font-style: normal;
+  font-weight: 400 700;
+  src: local('Georgia');
+  ascent-override: 88%;
+  descent-override: 26%;
+  line-gap-override: 0%;
+  size-adjust: 103%;
+}
+
+/* Playfair Display italic — adjusted Georgia Italic fallback */
+@font-face {
+  font-family: 'Playfair Display Fallback';
+  font-style: italic;
+  font-weight: 400 700;
+  src: local('Georgia Italic');
+  ascent-override: 88%;
+  descent-override: 26%;
+  line-gap-override: 0%;
+  size-adjust: 103%;
+}
+
 @font-face {
   font-family: 'DM Sans';
   font-style: normal;
@@ -33,8 +91,8 @@
 @import 'tailwindcss';
 
 @theme {
-  --font-sans: 'DM Sans', ui-sans-serif, system-ui, sans-serif;
-  --font-serif: 'Playfair Display', ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
+  --font-sans: 'DM Sans', 'DM Sans Fallback', ui-sans-serif, system-ui, sans-serif;
+  --font-serif: 'Playfair Display', 'Playfair Display Fallback', ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
 
   --color-base: var(--bg-base);
   --color-raised: var(--bg-raised);
@@ -60,6 +118,16 @@
   --border-subtle: #222222;
   --accent: #f3f3f3;
   --accent-fg: #111111;
+  --code-text: #d4d4d4;
+  --code-comment: #6a9955;
+  --code-keyword: #569cd6;
+  --code-type: #4ec9b0;
+  --code-string: #ce9178;
+  --code-meta: #d16969;
+  --code-number: #b5cea8;
+  --code-title: #dcdcaa;
+  --code-variable: #9cdcfe;
+  --code-deletion: #f44747;
 }
 
 body {
@@ -271,4 +339,104 @@ body::before {
 .markdown-body input[type='checkbox'] {
   margin-right: 0.5rem;
   accent-color: var(--accent);
+}
+
+/* ─── Syntax Highlighting (lowlight / highlight.js token classes) ────────── */
+/*
+ * Code blocks sit on --bg-overlay which is dark across all bundled themes.
+ * Token colours mirror VS Code Dark+ so the palette feels familiar.
+ */
+
+.hljs {
+  color: var(--code-text);
+}
+
+/* Comments */
+.hljs-comment,
+.hljs-quote {
+  color: var(--code-comment);
+  font-style: italic;
+}
+
+/* Keywords, control flow */
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-literal,
+.hljs-section,
+.hljs-link {
+  color: var(--code-keyword);
+}
+
+/* Built-ins, types */
+.hljs-built_in,
+.hljs-type {
+  color: var(--code-type);
+}
+
+/* Strings */
+.hljs-string,
+.hljs-attribute,
+.hljs-addition,
+.hljs-template-variable,
+.hljs-selector-attr,
+.hljs-selector-pseudo {
+  color: var(--code-string);
+}
+
+/* Regex, special */
+.hljs-regexp,
+.hljs-meta {
+  color: var(--code-meta);
+}
+
+/* Numbers */
+.hljs-number,
+.hljs-symbol,
+.hljs-bullet {
+  color: var(--code-number);
+}
+
+/* Function / method names */
+.hljs-title,
+.hljs-title.class_,
+.hljs-title.function_ {
+  color: var(--code-title);
+}
+
+/* Class / type names */
+.hljs-class .hljs-title,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class {
+  color: var(--code-type);
+}
+
+/* Tags (HTML/XML) */
+.hljs-tag {
+  color: var(--code-keyword);
+}
+
+/* Variables, params */
+.hljs-variable,
+.hljs-params {
+  color: var(--code-variable);
+}
+
+/* Operators, punctuation */
+.hljs-operator,
+.hljs-punctuation {
+  color: var(--code-text);
+}
+
+/* Deletions */
+.hljs-deletion {
+  color: var(--code-deletion);
+}
+
+/* Emphasis */
+.hljs-emphasis {
+  font-style: italic;
+}
+.hljs-strong {
+  font-weight: 700;
 }
